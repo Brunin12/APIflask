@@ -1,8 +1,8 @@
 DEBUG = True
 
-USERNAME = '*****'
-PASSWORD = '*****'
-SERVER = '127.0.0.1:5000'
+USERNAME = 'root'
+PASSWORD = '8Ns~*P^aV6t?aec'
+SERVER = 'localhost'
 DB = 'api_flask'
 
 SQLALCHEMY_DATABASE_URI = f'mysql://{USERNAME}:{PASSWORD}@{SERVER}/{DB}'

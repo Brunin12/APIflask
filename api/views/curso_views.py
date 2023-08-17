@@ -9,10 +9,12 @@ from datetime import datetime, date
 
 class ListaCursos(Resource):
     def get(self):
-        return "Olá Mundo"
+        cursos = curso_service.listar_cursos()
+        cs = curso_schema.CursoSchema(many=True)
+        return make_response(cs.jsonify(cursos), 200)
 
     def post(self):
-        print("post enviado")
+
         cs = curso_schema.CursoSchema()
         validacao = cs.validate(request.json)
         if validacao:
@@ -33,4 +35,41 @@ class ListaCursos(Resource):
             return make_response(resposta, 201)
 
 
+class CursoDetail(Resource):
+    def get(self, id):
+        curso = curso_service.listar_cursos_id(id)
+        if curso is None:
+            return make_response(jsonify(("Curso não foi encontrado")), 404)
+
+        cs = curso_schema.CursoSchema()
+        return make_response(cs.jsonify(curso), 200)
+
+    def put(self, id):
+        curso_bd = curso_service.listar_cursos_id(id)
+        if curso_bd is None:
+            return make_response(jsonify("Curso não foi encontrado"), 404)
+        cs = curso_schema.CursoSchema()
+        validate = cs.validate(request.json)
+        if validate:
+            return make_response(jsonify(validate), 400)
+        nome = request.json["nome"]
+        descricao = request.json["descricao"]
+        data_publicacao = request.json["data_publicacao"]
+        data_publicacao = datetime.strptime(data_publicacao, "%Y-%m-%d").date()
+        novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao)
+        curso_service.atualizar_curso(curso_bd, novo_curso)
+        curso_atualizado = curso_service.listar_cursos_id(id)
+        return make_response(cs.jsonify(curso_atualizado), 200)
+
+
+    def delete(self, id):
+        curso_bd = curso_service.listar_cursos_id(id)
+        if curso_bd is None:
+            return make_response(jsonify("Curso não encontrado"), 404)
+        curso_service.remover_curso(curso_bd)
+        return make_response(jsonify("Curso excluido"), 200)
+
+
+
 api.add_resource(ListaCursos, '/cursos')
+api.add_resource(CursoDetail, '/cursos/<int:id>')

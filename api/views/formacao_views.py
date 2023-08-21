@@ -9,7 +9,7 @@ from ..services import formacao_service
 
 class ListaFormacao(Resource):
     def get(self):
-        formacao = formacao_service.listar_formacao()
+        formacao = formacao_service.listar_formacoes()
         fs = formacao_schema.FormacaoSchema(many=True)
         return make_response(fs.jsonify(formacao), 200)
 
@@ -51,7 +51,7 @@ class FormacaoDetail(Resource):
         nome = request.json["nome"]
         descricao = request.json["descricao"]
         novo_curso = formacao.Formacao(nome=nome, descricao=descricao)
-        formacao_service.atualizar_formacao(formacao_bd, novo_curso)
+        formacao_service.atualiza_formacao(formacao_bd, novo_curso)
         formacao_atualizada = formacao_service.listar_formacao_id(id)
         return make_response(fs.jsonify(formacao_atualizada), 200)
 
@@ -60,10 +60,10 @@ class FormacaoDetail(Resource):
         formacao_bd = formacao_service.listar_formacao_id(id)
         if formacao_bd is None:
             return make_response(jsonify("formacao não encontrado"), 404)
-        formacao_service.remover_formacao(formacao_bd)
+        formacao_service.remove_formacao(formacao_bd)
         return make_response(jsonify("formacao excluido"), 200)
 
 
 
-api.add_resource(ListaFormacao, '/formacao')
+api.add_resource(ListaFormacao, '/formacoes')
 api.add_resource(FormacaoDetail, '/formacao/<int:id>')

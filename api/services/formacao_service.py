@@ -14,18 +14,18 @@ def cadastrar_formacao(formacao):
 
     return formacao_bd
 
-def listar_formacao():
+def listar_formacoes():
     return formacao_model.Formacao.query.all()
 
 def listar_formacao_id(id):
     return formacao_model.Formacao.query.filter_by(id=id).first()
 
-def atualizar_formacao(formacao_anterior, formacao_atualizada):
+def atualiza_formacao(formacao_anterior, formacao_atualizada):
     formacao_anterior.nome = formacao_atualizada.nome
     formacao_anterior.formacao = formacao_atualizada.formacao
     formacao_anterior.descricao = formacao_atualizada.descricao
     db.session.commit()
 
-def remover_formacao(formacao):
+def remove_formacao(formacao):
     db.session.delete(formacao)
     db.session.commit()

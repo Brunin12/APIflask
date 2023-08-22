@@ -1,10 +1,11 @@
 from api import db
 from .professor_model import Professor
 
-professor_formacao = db.Table('professor_formacao',
-db.Column('professor_id', db.Integer, db.ForeignKey('professor.id'), primary_key=True, nullable=False),
-db.Column('formacao_id', db.Integer, db.ForeignKey('formacao.id'), primary_key=True, nullable=False)
-                            )
+professor_formacao = db.Table(
+    'professor_formacao',
+    db.Column('professor_id', db.Integer, db.ForeignKey('professor.id'), primary_key=True, nullable=False),
+    db.Column('formacao_id', db.Integer, db.ForeignKey('formacao.id'), primary_key=True, nullable=False)
+)
 
 class Formacao(db.Model):
     __tablename__ = "formacao"

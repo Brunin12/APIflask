@@ -12,4 +12,5 @@ class ProfessorSchema(ma.SQLAlchemyAutoSchema):
     nome = fields.String(required=True)
     idade = fields.Integer(required=True)
 
+
     
